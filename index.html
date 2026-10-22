@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perpustakaan Literasi Kita - Peminjaman Buku Online</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container nav-container">
+      <div class="brand-logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <div class="brand-icon">📖</div>
+        <div class="brand-info">
+          <span class="brand-title lib-name">Perpustakaan Literasi Kita</span>
+          <span class="brand-badge">Sirkulasi & Peminjaman Online</span>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+          <button type="button" class="btn-history" id="btnHistory" title="Lihat Peminjaman Aktif Saya">
+          <span>📋</span>
+          <span>Pinjaman Saya</span>
+        </button>
+        <button type="button" class="btn-cart-toggle" id="btnToggleCart" title="Buka Rak Pinjam">
+          <span>📚 Rak Pinjam</span>
+          <span class="cart-count-badge" id="cartCountBadge" style="display: none;">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero-section" id="heroSection">
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+      <div class="hero-pill">
+        <span>✨</span>
+        <span>Layanan Peminjaman Mandiri & Bebas Biaya</span>
+      </div>
+
+      <h1 class="hero-title" id="heroTitle">Tempat Tenang untuk Pikiran yang Ingin Bertualang</h1>
+      <p class="hero-subtitle" id="heroSubtitle">
+        Jelajahi koleksi buku pilihan, cek ketersediaan eksemplar di rak secara real-time, dan ajukan peminjaman langsung dari peramban Anda.
+      </p>
+
+      <div class="hero-assurances">
+        <div class="assurance-item">
+          <span class="icon">✓</span>
+          <span>Peminjaman 100% Gratis</span>
+        </div>
+        <div class="assurance-item">
+          <span class="icon">✓</span>
+          <span>Batas Kuota: <strong class="lib-max-limit" style="color: #FDE68A; margin-left: 4px;">3</strong>&nbsp;Buku Sekaligus</span>
+        </div>
+        <div class="assurance-item">
+          <span class="icon">✓</span>
+          <span>Langsung Ambil di Meja Sirkulasi</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container filter-section">
+    <div class="search-box-card">
+      <div class="search-main-row">
+        <div class="search-input-wrapper">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="searchInput" 
+            class="search-input" 
+            placeholder="Cari judul buku, penulis favorit, atau nomor ISBN..." 
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="filter-toggle-wrap">
+          <label class="custom-checkbox-label">
+            <input type="checkbox" id="availableOnlyCheck" />
+            <span>Hanya Yang Tersedia</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="category-chips-row" id="categoryChipsRow">
+      </div>
+    </div>
+  </section>
+
+  <main class="container collection-section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Koleksi Buku di Perpustakaan</h2>
+        <p class="section-subtitle">Pilih buku favorit Anda dan masukkan ke Rak Pinjam untuk reservasi langsung.</p>
+      </div>
+      <div class="result-count" id="resultCount">Memuat koleksi...</div>
+    </div>
+
+    <div class="book-grid" id="bookGrid">
+    </div>
+  </main>
+
+  <section class="quote-banner-section" id="quoteBannerSection">
+    <div class="quote-banner-overlay"></div>
+    <div class="container quote-banner-content">
+      <div class="quote-symbol">“</div>
+      <blockquote class="quote-text">
+        Membaca adalah percakapan sunyi dengan pikiran-pikiran terbaik dari masa lampau, yang memberi kita ketenangan dan kebijaksanaan baru di hari ini.
+      </blockquote>
+      <p class="quote-author">— Catatan Dari Ruang Baca</p>
+    </div>
+  </section>
+
+  <section class="container how-it-works-section">
+    <div style="text-align: center; max-width: 620px; margin: 0 auto;">
+      <h2 class="section-title" style="font-size: 2rem;">Alur Peminjaman Praktis & Jelas</h2>
+      <p class="section-subtitle">
+        Proses peminjaman terjadi langsung di website ini. Anda tidak perlu mengantre lama atau cemas kehabisan buku saat tiba di lokasi.
+      </p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h3 class="step-title">Pilih & Masukkan ke Rak</h3>
+        <p class="step-desc">
+          Temukan buku impian Anda, periksa ketersediaan eksemplar dan posisi rak fisiknya, lalu tekan tombol <strong>+ Pinjam</strong>.
+        </p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h3 class="step-title">Lengkapi Data Peminjam</h3>
+        <p class="step-desc">
+          Tentukan durasi pinjam (3, 7, atau 14 hari) dan isi identitas Anda (Nama, NIM/No. Anggota, & WhatsApp) untuk reservasi resmi.
+        </p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h3 class="step-title">Dapatkan Slip & Ambil Buku</h3>
+        <p class="step-desc">
+          Sistem menerbitkan Kode Peminjaman resmi. Tunjukkan kode ini ke petugas di Meja Sirkulasi untuk langsung membawa pulang buku.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer-banner-section" id="footerBannerSection">
+    <div class="footer-banner-overlay"></div>
+    <div class="container footer-banner-content">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4 class="lib-name">Perpustakaan Literasi Kita</h4>
+          <p>
+            Ruang belajar publik yang hangat, inklusif, dan nyaman untuk semua pencari ilmu, pembaca buku, serta penjelajah pemikiran.
+          </p>
+          <p style="margin-top: 12px; color: #FDE68A;">
+            📍 <span id="libAddress">Jl. Cendekia No. 42, Indonesia</span>
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Jam Operasional</h4>
+          <p id="libHours">Senin - Sabtu: 08.30 - 17.30 WIB</p>
+          <p style="color: #94A3B8;">Minggu & Hari Libur Nasional Tutup</p>
+          <p style="margin-top: 12px;">Batas Maksimal: <strong class="lib-max-limit">3</strong> buku / orang</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Pusat Bantuan</h4>
+          <ul>
+            <li>• Layanan Bebas Denda Hari Pertama</li>
+            <li>• Meja Sirkulasi Lantai 1</li>
+            <li>• Perpanjangan Pinjaman via Petugas</li>
+            <li>• Ruang Baca Berpendingin & WiFi</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 Perpustakaan Literasi Kita. Dirancang dengan sepenuh hati untuk kenyamanan membaca Anda.</p>
+      </div>
+    </div>
+  </footer>
+
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Rak Pinjam Anda">
+    <div class="drawer-header">
+      <h3 class="drawer-title">
+        <span>📚</span>
+        <span>Rak Pinjam Saya</span>
+      </h3>
+      <button type="button" class="btn-close-drawer" id="btnCloseDrawer" aria-label="Tutup Rak">✕</button>
+    </div>
+
+    <div class="quota-progress-box">
+      <div class="quota-label-row">
+        <span id="quotaLabel">0 dari 3 buku terpilih</span>
+        <span id="quotaRemaining">Sisa kuota: 3 buku</span>
+      </div>
+      <div class="quota-bar-track">
+        <div class="quota-bar-fill" id="quotaBarFill" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <div class="drawer-items-list" id="drawerItemsList">
+    </div>
+
+    <div class="duration-selector-wrap">
+      <label>Pilih Durasi Peminjaman:</label>
+      <div class="duration-options-grid">
+        <button type="button" class="duration-btn" data-days="3">3 Hari</button>
+        <button type="button" class="duration-btn active" data-days="7">7 Hari</button>
+        <button type="button" class="duration-btn" data-days="14">14 Hari</button>
+      </div>
+      <div class="return-date-preview" id="returnDateEstimate">
+        Estimasi Jatuh Tempo: Menghitung...
+      </div>
+    </div>
+
+    <div class="drawer-footer">
+      <button type="button" class="btn-checkout-proceed" id="btnProceedCheckout" disabled>
+        <span>Lanjutkan Pengajuan Pinjam →</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="app-modal" id="modalDetail" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <h3 class="serif-heading" style="font-size: 1.15rem;">Informasi Lengkap Buku</h3>
+      <button type="button" class="btn-close-drawer" onclick="closeModal('modalDetail')">✕</button>
+    </div>
+    <div class="modal-body" id="modalDetailContent">
+    </div>
+  </div>
+
+  <div class="app-modal" id="modalCheckout" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div>
+        <h3 class="serif-heading" style="font-size: 1.25rem;">Formulir Peminjaman Buku</h3>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
+          Lengkapi data diri Anda untuk mengamankan buku yang dipilih.
+        </p>
+      </div>
+      <button type="button" class="btn-close-drawer" onclick="closeModal('modalCheckout')">✕</button>
+    </div>
+    
+    <div class="modal-body">
+      <form id="formCheckout">
+        <div class="form-group">
+          <label class="form-label" for="borrowerName">Nama Lengkap Peminjam <span class="required">*</span></label>
+          <input type="text" id="borrowerName" class="form-input" placeholder="Contoh: Budi Santoso" required />
+          <p class="form-help">Sesuai dengan kartu identitas atau kartu anggota Anda.</p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="borrowerId">Nomor Anggota / NIM / NIK <span class="required">*</span></label>
+          <input type="text" id="borrowerId" class="form-input" placeholder="Contoh: 2024101089 atau 3201..." required />
+          <p class="form-help">Untuk pencocokan berkas saat pengambilan buku di meja petugas.</p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="borrowerPhone">Nomor WhatsApp Aktif <span class="required">*</span></label>
+          <input type="tel" id="borrowerPhone" class="form-input" placeholder="Contoh: 081234567890" required />
+          <p class="form-help">Untuk pengingat ramah sebelum masa pinjam berakhir (bebas spam).</p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="borrowerNotes">Catatan Tambahan (Opsional)</label>
+          <input type="text" id="borrowerNotes" class="form-input" placeholder="Contoh: Diambil sore hari sekitar jam 15.00 WIB" />
+        </div>
+
+        <div class="order-summary-box">
+          <h5>Ringkasan Peminjaman Anda:</h5>
+          <div id="checkoutSummaryList">
+          </div>
+          <div style="margin-top: 10px; font-size: 0.82rem; color: #4B5563; display: flex; justify-content: space-between;">
+            <span>Batas Pengembalian:</span>
+            <strong id="checkoutDueDate" style="color: var(--primary);">-</strong>
+          </div>
+          <div style="margin-top: 4px; font-size: 0.82rem; color: #4B5563; display: flex; justify-content: space-between;">
+            <span>Biaya Peminjaman:</span>
+            <strong style="color: var(--success);">100% Gratis (Layanan Perpustakaan)</strong>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-checkout-proceed" style="width: 100%;">
+          <span>🔒 Konfirmasi & Terbitkan Bukti Pinjam</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="app-modal" id="modalReceipt" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <h3 class="serif-heading" style="font-size: 1.25rem;">Peminjaman Berhasil Dikonfirmasi! 🎉</h3>
+      <button type="button" class="btn-close-drawer no-print" onclick="closeModal('modalReceipt')">✕</button>
+    </div>
+    <div class="modal-body" id="modalReceiptContent">
+
+    </div>
+  </div>
+
+  <div class="app-modal" id="modalHistory" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div>
+        <h3 class="serif-heading" style="font-size: 1.25rem;">Riwayat Peminjaman Saya</h3>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
+          Daftar bukti peminjaman Anda yang tersimpan di perangkat ini.
+        </p>
+      </div>
+      <button type="button" class="btn-close-drawer" onclick="closeModal('modalHistory')">✕</button>
+    </div>
+    <div class="modal-body" id="loansHistoryList">
+
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop"></div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
